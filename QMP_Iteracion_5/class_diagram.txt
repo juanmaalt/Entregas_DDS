@@ -1,0 +1,79 @@
+@startuml
+
+title Classes - Class Diagram
+
+Interface AccuWeatherAPI{
+	+ HashMap obtenerClimaAPI(String ciudad)
+}
+
+Interface WeatherBitAPI{
+	+ BigDecimal obtenerClimaAPI(String ciudad)
+}
+
+class ClimaAccuweather implements AccuWeatherAPI{
+	- List<Map<String, Object>> condicionesClimaticas
+	- requestTime
+	- requestCount
+
+	+ BigDecimal obtenerClimaAPI(String ciudad)
+}
+
+class ClimaWeatherBit implements WeatherBitAPI{
+	+ BigDecimal obtenerClimaAPI(String ciudad)
+}
+
+class Clima{
+	+ int obtenerClimaActual(String interfazClima, String ciudad)
+}
+
+class Usuario {
+	- Guardarropas guardarropas
+	- String interfazClima
+	- String ciudad
+
+	+ BigDecimal obtenerClima(String interfazClima, String ciudad)
+	+ Atuendo obtenerSugerencias()
+}
+
+class Guardarropas{
+    - String nombreGuardarropas
+	- List<Prendas> prendas
+    - List<Usuario> dueniosGuardarropas
+	- List<Prenda> prendas
+	- List<Pair<Prenda, Integer>> prendasSugeridas
+	- List<Pair<Prenda, Integer>> prendasModificadas
+	
+	+ Guardarropas(String nombreGuardarropas, List<Usuario> dueniosGuardarropas)
+	+ sugerirAgregarPrenda(Prenda prendaSugerida)
+	+ sugerirQuitarPrenda(Prenda prendaSugerida)
+	+ verSugerenciasDeCambio()
+	+ verCambiosGuardarropas()
+	+ Atuendo sugerirAtuendo(BigDecimal temperatura)
+	+ Prenda seleccionarPrenda(TipoPrenda tipoPrenda, BigDecimal temperatura)
+}
+
+class Prenda {
+	...
+	- BigDecimal temperaturaMinima
+	- BigDecimal temperaturaMaxima
+    ...
+	+ bool temperaturaValida(BigDecimal temperatura)
+}
+
+class Atuendo{
+	- Prenda remera
+	- Prenda pantalon
+	- Prenda zapatos
+	- Prenda gorro
+}
+
+Usuario --> "*" Guardarropas
+Guardarropas --> "*" Usuario
+Guardarropas --> "*" Prenda
+Atuendo --> "*" Prenda
+Clima ..> AccuWeatherAPI
+Clima ..> WeatherBitAPI
+Usuario ..> Clima
+
+
+@enduml
